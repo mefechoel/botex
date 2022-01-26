@@ -1,0 +1,23 @@
+{
+	"plugins": ["prettier", "@typescript-eslint/eslint-plugin"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended"
+	],
+	"rules": {
+		"indent": "off",
+		"@typescript-eslint/indent": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/explicit-member-accessibility": "off",
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"no-console": "warn",
+		"prefer-const": "off"
+	},
+	"env": {
+		"es6": true,
+		"browser": true,
+		"node": true
+	},
+	"parser": "@typescript-eslint/parser"
+}

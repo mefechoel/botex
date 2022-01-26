@@ -1,0 +1,15 @@
+/**/dist/
+/**/dist-webapp/
+/**/distSSR/
+/**/distSSG/
+/**/coverage/
+/**/.nyc_output
+/**/.husky
+/**/.vscode
+/**/node_modules/
+/**/tmp/
+/**/package-lock.json
+/**/package.json
+test/public/*
+**/tsconfig.json
+**/*.html

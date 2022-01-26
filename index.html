@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Botex</title>
+		<link rel="stylesheet" href="./webapp/style.css" />
+	</head>
+	<body>
+		<h1>Botex</h1>
+		<div class="description">
+			<p>
+				Enter a key, an input, such as a phone number or an email address and
+				copy the scrambled output
+			</p>
+		</div>
+
+		<div class="input-grid">
+			<fieldset>
+				<legend class="visually-hidden">Mode:</legend>
+				<label for="radio-scramble">
+					<span class="label-text">Scramble</span>
+					<input
+						type="radio"
+						name="mode"
+						id="radio-scramble"
+						value="scramble"
+						checked
+					/>
+				</label>
+				<label for="radio-unscramble">
+					<span class="label-text">Unscramble</span>
+					<input
+						type="radio"
+						name="mode"
+						id="radio-unscramble"
+						value="unscramble"
+					/>
+				</label>
+			</fieldset>
+			<label for="key" class="label key">
+				<span class="label-wrapper">
+					<span class="label-text">Key</span>
+					<span class="length-wrapper">
+						<span class="length-display">0</span>
+						letters
+					</span>
+				</span>
+				<div class="wrapper">
+					<textarea id="key" placeholder="Key"></textarea>
+					<button
+						class="icon-button generate-id"
+						id="generate-id"
+						type="button"
+						title="Generate a random key"
+						aria-label="Generate a random key"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+							viewBox="0 0 24 24"
+						>
+							<path stroke="none" d="M0 0h24v24H0z" />
+							<path
+								d="M20 11A8.1 8.1 0 004.5 9M4 5v4h4M4 13a8.1 8.1 0 0015.5 2m.5 4v-4h-4"
+							/>
+						</svg>
+					</button>
+				</div>
+			</label>
+			<label for="input" class="label input">
+				<span class="label-wrapper">
+					<span class="label-text">Input</span>
+					<span class="length-wrapper">
+						<span class="length-display">0</span>
+						letters
+					</span>
+				</span>
+				<textarea id="input" placeholder="my@email.com"></textarea>
+			</label>
+			<button
+				class="icon-button switch-io"
+				id="switch-io"
+				type="button"
+				aria-label="Switch input and output"
+				title="Switch input and output"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					stroke="currentColor"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="1.5"
+					viewBox="0 0 24 24"
+				>
+					<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+					<polyline points="3 8 7 4 11 8"></polyline>
+					<line x1="7" y1="4" x2="7" y2="13"></line>
+					<polyline points="13 16 17 20 21 16"></polyline>
+					<line x1="17" y1="10" x2="17" y2="20"></line>
+				</svg>
+			</button>
+			<label for="output" class="label output">
+				<span class="label-wrapper">
+					<span class="label-text">Output</span>
+					<span class="length-wrapper">
+						<span class="length-display">0</span>
+						letters
+					</span>
+				</span>
+				<textarea disabled id="output" placeholder="Output"></textarea>
+			</label>
+		</div>
+
+		<script src="./webapp/index.ts" type="module"></script>
+	</body>
+</html>
