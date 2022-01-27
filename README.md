@@ -12,17 +12,18 @@
 Some personal information like email addresses or phone numbers, should never
 appear in plain text in your website's source code, so bots can't scrape them.
 Otherwise your contact information is in danger of being the target of spam
-mails or sms. This is where `botex` comes in. Using it's cli or webapp, or using
-the library server side, you can hide your personal contact info from bots.
-Usually, this is done by base64 encoding the email or tel strings and only
-decoding them when a user clicks on a mailto link for example. But scraping bots
-have improved and can nowadays automatically decipeher base64 or other simple
-ciphers, such as cesar ciphers. `botex` obfuscates personal information by using
-a key - that can be any string - to scramble the input. Doing that, it makes it
-much harder for bots to deobfuscate the data, as they'd first need to find out
-that you're using `botex` and then not only find the encoded information, but
-also the key for it. Specialized bots would first have to be developed to do
-this, which is hopefully to much of a hassle for hackers to be done.
+mails or sms. This is where `botex` comes in. Using its CLI, the
+[botex webapp](https://botex.pages.dev/), or using the library server side, you
+can hide your personal contact info from bots. Usually, this is done by base64
+encoding the email or tel strings and only decoding them when a user clicks on a
+mailto link for example. But scraping bots have improved and can nowadays
+automatically decipeher base64 or other simple ciphers, such as cesar ciphers.
+`botex` obfuscates personal information by using a key - that can be any
+string - to scramble the input. Doing that, it makes it much harder for bots to
+deobfuscate the data, as they'd first need to find out that you're using `botex`
+and then not only find the encoded information, but also the key for it.
+Specialized bots would first have to be developed to do this, which is hopefully
+to much of a hassle for hackers to be done.
 
 `botex` tries to be a compromise between being secure (it's not securely
 encrypting anything, but hopefully annoying bots enough to give up) and being
@@ -97,7 +98,7 @@ Obfuscate the input string, so that bots (hopefully) can't read it (default comm
 
 Options:
   -k, --key <key>            The key used to obfuscate the input. This can be any string
-  -a, --auto-key             If present, scrambli will auto generate a key for you (default: false)
+  -a, --auto-key             If present, botex will auto generate a key for you (default: false)
   -l, --key-length <length>  The length of the generated key (default: "16")
   -s, --code-snippet         Print a JS code snippet using the created values (default: false)
 ```

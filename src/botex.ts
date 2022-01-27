@@ -35,7 +35,7 @@ const scramble = (inputStr: string, key: string): string => {
 	// letters to encode the length of each code in base10, simply by
 	// replacing each digit from 0-9 with the corresponding letter
 	// from A-J
-	let base10Codes = "ABCDEFGHIJ".split("");
+	let base10Codes = "ABCDEFGHIJ";
 
 	// Calculate the length of a code and encode the result as a string
 	// using only uppercase letters.
@@ -53,7 +53,8 @@ const scramble = (inputStr: string, key: string): string => {
 	let currentLength = "";
 	let obfuscated = "";
 
-	inputStr.split("").forEach((char, i) => {
+	// Use map instead of forEach, as it's a bit shorter
+	inputStr.split("").map((char, i) => {
 		// XOR each letters char code with the char code of the key at
 		// the same index.
 
@@ -112,27 +113,13 @@ const scramble = (inputStr: string, key: string): string => {
  * ```
  */
 const unscramble = (scrambledStr: string, key: string): string => {
-	// To parse the code length's, we've encoded with uppercase letters, we
-	// need a map, that provides the digit corresponding to the letter used
-	// in the encoding
-	let reverseBase10Codes: { [letter: string]: number } = {
-		A: 0,
-		B: 1,
-		C: 2,
-		D: 3,
-		E: 4,
-		F: 5,
-		G: 6,
-		H: 7,
-		I: 8,
-		J: 9,
-	};
-
 	// Turn an uppercase encoded length back to a number
 	let parseLength = (encodedLength: string): number => {
 		let base10Str = encodedLength
 			.split("")
-			.map((letter) => reverseBase10Codes[letter])
+			// The charcode of "A" is 65, so subtracting 65 gives us the index
+			// in the string "ABCDEFGHIJ", so the encoded base10 number
+			.map((letter) => letter.charCodeAt(0) - 65)
 			.join("");
 		// Using the unary `+` here is equivalent to `Number(base10Str)`. It's
 		// just a bit shorter
@@ -154,26 +141,29 @@ const unscramble = (scrambledStr: string, key: string): string => {
 	} as const;
 	type ParserState = typeof ParserStates[keyof typeof ParserStates];
 
-	// Length markers are uppercase letters between A-J. We don't need regex
-	// start or end markers (^, $) here, because we know, that we only ever
-	// check one letter at a time
-	let base10CodesRegex = /[A-J]/;
 	// Each encoded string starts with a length marker
 	let state: ParserState = ParserStates.Length;
+	// Keep track of where we're at in the code list
+	let i = 0;
 	// If we're parsing a lenght marker, store the current value
 	let currentLength = "";
 	// If we're parsing a code, store the current value
 	let currentCode = "";
-	// When we're done parsing a code, push it to a list, so we can decrypt
-	// it later
-	let codeList: string[] = [];
+	// When we're done parsing a code, append its decrypted value to the
+	// result string
+	let result = "";
 
-	scrambledStr.split("").forEach((char) => {
+	// Use map instead of forEach, as it's a bit shorter
+	scrambledStr.split("").map((char) => {
+		// Length markers are uppercase letters between A-J. We don't need regex
+		// start or end markers (^, $) here, because we know, that we only ever
+		// check one letter at a time
+		let base10CodesRegex = /[A-J]/;
 		// We've hit a length marker
 		if (base10CodesRegex.test(char)) {
-			// If already in length parsing mode, append the char to the  current
+			// If already in length parsing mode, append the char to the current
 			// length. We've hit a multi digit length marker
-			if (state === ParserStates.Length) {
+			if (state == ParserStates.Length) {
 				currentLength += char;
 			} else {
 				// Override the last length
@@ -183,27 +173,24 @@ const unscramble = (scrambledStr: string, key: string): string => {
 		} else {
 			state = ParserStates.Code;
 			currentCode += char;
-			let codeLength = parseLength(currentLength);
-			// Clear the code and push it to the code list, when we've hit its
-			// target length
-			if (currentCode.length === codeLength) {
-				codeList.push(currentCode);
+			// Clear the code and append its decrypted value to the result, when
+			// we've hit its target length
+			if (currentCode.length == parseLength(currentLength)) {
+				// Decrypt the encoded codes using the same XOR cipher we used to
+				// encrypt the input.
+				// Each code is base36 encoded to save space
+				let cypherCodes = parseInt(currentCode, 36);
+				// Get the charcode at the current index in the codelist.
+				// Increment the position on the codelist afterwards
+				let keyCode = key.charCodeAt(i++ % key.length);
+				let charCode = cypherCodes ^ keyCode;
+				result += String.fromCharCode(charCode);
 				currentCode = "";
 			}
 		}
 	});
 
-	// Decrypt the encoded codes using the same XOR cipher we used to
-	// encrypt the input
-	let charList = codeList.map((code, i) => {
-		// Each code is base36 encoded to save space
-		let cypherCodes = parseInt(code, 36);
-		let keyCode = key.charCodeAt(i % key.length);
-		let charCode = cypherCodes ^ keyCode;
-		return String.fromCharCode(charCode);
-	});
-
-	return charList.join("");
+	return result;
 };
 
 export { scramble, unscramble };

@@ -73,3 +73,14 @@ test("Destroyed: Tel          ", macro, "+99 123 0123 9876", destroyedKey);
 test("Destroyed: Tel          ", macro, "0123-0123-9876", destroyedKey);
 test("Destroyed: Destroyed 1  ", macro, destroyed1, destroyedKey);
 test("Destroyed: Destroyed 2  ", macro, destroyed2, destroyedKey);
+
+test("Scramble works with empty params", (t) => {
+	t.notThrows(() => scramble("", ""));
+	t.notThrows(() => scramble("abcd", ""));
+	t.notThrows(() => scramble("", "abcd"));
+});
+test("Unscramble works with empty params", (t) => {
+	t.notThrows(() => unscramble("", ""));
+	t.notThrows(() => unscramble("abcd", ""));
+	t.notThrows(() => unscramble("", "abcd"));
+});
