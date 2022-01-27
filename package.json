@@ -1,6 +1,6 @@
 {
   "name": "botex",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Obfuscate email addresses and other personal data, so bots can't scrape them",
   "main": "dist/index.umd.js",
   "unpkg": "dist/index.umd.js",
