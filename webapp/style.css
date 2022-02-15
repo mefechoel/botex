@@ -110,3 +110,14 @@ fieldset {
 	white-space: nowrap;
 	width: 1px;
 }
+
+.gh-link {
+	position: absolute;
+	top: 0.5em;
+	right: 0.5em;
+}
+
+.gh-link svg {
+	width: 2em;
+	height: 2em;
+}
