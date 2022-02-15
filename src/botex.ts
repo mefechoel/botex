@@ -133,16 +133,13 @@ const unscramble = (scrambledStr: string, key: string): string => {
 	// 2 characters long. If we then hit a `E`, we know the next codes will be
 	// 4 characters long. So the parser can be in two states: parsing a length
 	// marker or parsing a code.
-	// Don't use a TS Enum here, as it will generate unnecessary code
-	// to make reverse Enums possible...
-	let ParserStates = {
-		Length: 0,
-		Code: 1,
-	} as const;
-	type ParserState = typeof ParserStates[keyof typeof ParserStates];
+	// Don't use a TS Enum here, as it will generate quite a lot of code...
+	let ParserStateLength = 0 as const;
+	let ParserStateCode = 1 as const;
+	type ParserState = typeof ParserStateLength | typeof ParserStateCode;
 
 	// Each encoded string starts with a length marker
-	let state: ParserState = ParserStates.Length;
+	let state: ParserState = ParserStateLength;
 	// Keep track of where we're at in the code list
 	let i = 0;
 	// If we're parsing a lenght marker, store the current value
@@ -163,15 +160,12 @@ const unscramble = (scrambledStr: string, key: string): string => {
 		if (base10CodesRegex.test(char)) {
 			// If already in length parsing mode, append the char to the current
 			// length. We've hit a multi digit length marker
-			if (state == ParserStates.Length) {
-				currentLength += char;
-			} else {
-				// Override the last length
-				currentLength = char;
-			}
-			state = ParserStates.Length;
+			currentLength = state /* true if state == 1 == ParserStateCode */
+				? char
+				: currentLength + char;
+			state = ParserStateLength;
 		} else {
-			state = ParserStates.Code;
+			state = ParserStateCode;
 			currentCode += char;
 			// Clear the code and append its decrypted value to the result, when
 			// we've hit its target length
