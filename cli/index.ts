@@ -6,11 +6,11 @@ import { version } from "../package.json";
 const keySrc = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const defaultKeyLength = 16;
 
-const createKey = (keyLength: number) =>
+const createKey = (keyLength: number, alphabet = keySrc) =>
 	[...randomBytes(keyLength)]
 		.map((byte) => {
-			const index = Math.floor((byte / 256) * keySrc.length);
-			return keySrc[index];
+			const index = Math.floor((byte / 256) * alphabet.length);
+			return alphabet[index];
 		})
 		.join("");
 
@@ -33,6 +33,11 @@ program
 		false,
 	)
 	.option(
+		"-b, --alphabet <alphabet>",
+		"The set of characters botex should use to generate a key",
+		keySrc,
+	)
+	.option(
 		"-l, --key-length <length>",
 		"The length of the generated key",
 		defaultKeyLength + "",
@@ -48,12 +53,13 @@ program
 			options: {
 				key?: string;
 				autoKey: boolean;
+				alphabet: string;
 				keyLength: string;
 				codeSnippet: boolean;
 			},
 		) => {
 			const key = options.autoKey
-				? createKey(Number(options.keyLength))
+				? createKey(Number(options.keyLength), options.alphabet)
 				: options.key;
 
 			if (!key) {
