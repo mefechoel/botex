@@ -17,7 +17,7 @@ mails or sms. This is where `botex` comes in. Using its CLI, the
 can hide your personal contact info from bots. Usually, this is done by base64
 encoding the email or tel strings and only decoding them when a user clicks on a
 mailto link for example. But scraping bots have improved and can nowadays
-automatically decipeher base64 or other simple ciphers, such as cesar ciphers.
+automatically decipher base64 or other simple ciphers, such as cesar ciphers.
 `botex` obfuscates personal information by using a key - that can be any
 string - to scramble the input. Doing that, it makes it much harder for bots to
 deobfuscate the data, as they'd first need to find out that you're using `botex`
@@ -78,7 +78,7 @@ keys, so you can just copy them into your project.
 ```
 $ botex --help
 
-Usage: cli [options] [command]
+Usage: botex [options] [command]
 
 Options:
   -v, --version                 output the version number
@@ -87,31 +87,36 @@ Options:
 Commands:
   scramble [options] <input>    Obfuscate the input string, so that bots (hopefully) can't read it (default command)
   unscramble [options] <input>  Deobfuscate a scrambled string to retrieve the original data
+  help [command]                display help for command
 ```
 
 ```
 $ botex scramble --help
 
-Usage: cli scramble [options] <input>
+Usage: botex scramble [options] <input>
 
 Obfuscate the input string, so that bots (hopefully) can't read it (default command)
 
 Options:
   -k, --key <key>            The key used to obfuscate the input. This can be any string
   -a, --auto-key             If present, botex will auto generate a key for you (default: false)
+  -b, --alphabet <alphabet>  The set of characters botex should use to generate a key (default:
+                             "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
   -l, --key-length <length>  The length of the generated key (default: "16")
   -s, --code-snippet         Print a JS code snippet using the created values (default: false)
+  -h, --help                 display help for command
 ```
 
 ```
 $ botex unscramble --help
 
-Usage: cli unscramble [options] <input>
+Usage: botex unscramble [options] <input>
 
 Deobfuscate a scrambled string to retrieve the original data
 
 Options:
   -k, --key <key>  The key used to obfuscate the input
+  -h, --help       display help for command
 ```
 
 ## License
