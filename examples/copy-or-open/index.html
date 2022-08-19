@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!--
+This demo page uses the beatiful Tabler Icons (https://github.com/tabler/tabler-icons).
+
+Find its license here:
+
+MIT License
+
+Copyright (c) 2020 Paweł Kuna
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Copy or Open</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<h1>How to setup a website to use <code>botex</code></h1>
+		<span class="link-wrapper" id="link-wrapper">
+			<a id="link" href="#" role="button" class="link" tabindex="0">
+				<!-- In a production website, you should replace the plain email -->
+				<!-- string with an svg of the text. You can create such an svg -->
+				<!-- image with the Google Font to Svg Path tool: -->
+				<!-- https://danmarshall.github.io/google-font-to-svg-path/ -->
+				email@my-website.com
+			</a>
+			<div id="popup" class="popup">
+				<button
+					id="copy-button"
+					type="button"
+					class="popup-button popup-button--copy"
+				>
+					<span class="hidden-button-label">
+						Copy email address to clipboard
+					</span>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path stroke="none" d="M0 0h24v24H0z" />
+						<path
+							d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"
+						/>
+						<rect width="6" height="4" x="9" y="3" rx="2" />
+					</svg>
+				</button>
+				<button
+					id="open-button"
+					type="button"
+					class="popup-button popup-button--open"
+				>
+					<span class="hidden-button-label">Write an email to contact</span>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path stroke="none" d="M0 0h24v24H0z" />
+						<rect width="18" height="14" x="3" y="5" rx="2" />
+						<path d="M3 7l9 6 9-6" />
+					</svg>
+				</button>
+			</div>
+		</span>
+
+		<script type="module">
+			import { unscramble } from "//unpkg.com/botex@0.1.2/dist/index.min.mjs";
+
+			const ENCODED_MAIL = "BhrrhlaC13211yB0C2f2aBkrC1i2a2iBlll";
+			const KEY = "tvzxyJJ0kw20grB7";
+
+			/** @type {(selector: string) => HTMLElement} */
+			const $ = document.querySelector.bind(document);
+
+			const linkWrapper = $("#link-wrapper");
+			const link = $("#link");
+			const popup = $("#popup");
+			const copyButton = $("#copy-button");
+			const openButton = $("#open-button");
+
+			copyButton.addEventListener("click", () => {
+				navigator.clipboard.writeText(unscramble(ENCODED_MAIL, KEY));
+			});
+
+			openButton.addEventListener("click", () => {
+				const decoded = unscramble(ENCODED_MAIL, KEY);
+				window.location.href = `mailto:${decoded}`;
+			});
+
+			function setIsPopupOpen(isOpen) {
+				popup.classList.toggle("popup--open", isOpen);
+			}
+			function isPopupOpen() {
+				return popup.classList.contains("popup--open");
+			}
+
+			link.addEventListener("click", (e) => {
+				e.preventDefault();
+				setIsPopupOpen(true);
+			});
+			link.addEventListener("keydown", (e) => {
+				if (["Enter", " "].includes(e.key)) {
+					setIsPopupOpen(true);
+				}
+			});
+
+			linkWrapper.addEventListener("focus", () => setIsPopupOpen(true));
+			linkWrapper.addEventListener("blur", () => setIsPopupOpen(false));
+
+			document.addEventListener("click", (e) => {
+				if (!isPopupOpen()) return;
+				if (!linkWrapper.contains(e.target)) {
+					setIsPopupOpen(false);
+				}
+			});
+			document.addEventListener("keydown", (e) => {
+				if (!isPopupOpen()) return;
+				if (e.key === "Escape") {
+					setIsPopupOpen(false);
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,112 @@
+:root {
+	--accentCol: hsl(318, 98%, 39%);
+}
+
+body,
+html {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+}
+
+:focus {
+	outline: 0.2rem solid var(--accentCol);
+	outline-offset: 0.2rem;
+}
+
+:focus:not(:focus-visible) {
+	outline: none;
+}
+
+:focus-visible {
+	outline: 0.2rem solid var(--accentCol);
+	outline-offset: 0.2rem;
+}
+
+.link-wrapper {
+	--bgCol: hotpink;
+	--highlightBgCol: hsl(330, 100%, 84%);
+	--borderCol: hsl(330, 41%, 42%);
+	--buttonSize: 3.2em;
+	--buttonPadding: 0.2em;
+
+	position: relative;
+}
+
+.link {
+	display: inline-block;
+	height: 1em;
+	cursor: pointer;
+}
+
+.popup-button {
+	position: relative;
+	border: none;
+	background: var(--bgCol);
+	width: var(--buttonSize);
+	height: var(--buttonSize);
+	padding: var(--buttonPadding);
+	margin: 0;
+	cursor: pointer;
+}
+
+.popup-button:first-child {
+	border-right: 0.05rem solid var(--bgCol);
+	padding-right: calc(var(--buttonPadding) + 0.3em);
+}
+
+.popup-button:last-child {
+	border-left: 0.05rem solid var(--bgCol);
+	padding-left: calc(var(--buttonPadding) + 0.3em);
+}
+
+.popup-button:hover,
+.popup-button:focus-visible {
+	background: var(--highlightBgCol);
+}
+
+.hidden-button-label {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+.popup {
+	position: absolute;
+	top: calc(-1 * (var(--buttonSize) + 0.5em));
+	left: calc(50% - var(--buttonSize) - var(--buttonPadding));
+	display: flex;
+	border: 0.25rem solid var(--bgCol);
+
+	opacity: 0;
+	transform: translateY(0.16rem);
+	pointer-events: none;
+
+	transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.popup.popup--open,
+.link-wrapper:focus-within .popup {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
+}
+
+.popup::after {
+	--arrowSize: 0.75em;
+	content: "";
+	position: absolute;
+	bottom: calc(-1 * var(--arrowSize));
+	left: calc(50% - var(--arrowSize));
+	display: block;
+	width: 0;
+	height: 0;
+	z-index: -1;
+	border-top: var(--arrowSize) solid var(--bgCol);
+	border-left: var(--arrowSize) solid transparent;
+	border-right: var(--arrowSize) solid transparent;
+}
