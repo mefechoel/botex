@@ -1,4 +1,4 @@
-# botex
+# 🤖 botex
 
 [![npm package](https://img.shields.io/npm/v/botex.svg?style=flat-square)](https://npmjs.com/package/botex)
 [![npm bundle size](https://img.shields.io/bundlephobia/min/botex?style=flat-square)](https://bundlephobia.com/result?p=botex)
